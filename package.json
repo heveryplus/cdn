@@ -1,6 +1,6 @@
 {
   "name": "hevery-cdn",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "hevery cdn image",
   "main": "index.js",
   "scripts": {
