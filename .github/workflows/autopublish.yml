@@ -1,19 +1,58 @@
-name: Node.js Package
-# 监测图床分支
+name: NPM & WebP
+
+# 在 Release 发布时 或手动执行
+
 on:
-  push:
-    branches:
-      - master
+  release:
+     types:
+       - published
+
+  workflow_dispatch:
 
 jobs:
   publish-npm:
     runs-on: ubuntu-latest
+    # Clone 仓库
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: master
+      # 安装 Node.js    
+      - name: Setup Node
+        uses: actions/setup-node@v1
         with:
           node-version: "12.x"
           registry-url: https://registry.npmjs.org/
-      - run: npm publish
+        
+      # rawimg/ 作为原始图片存储，webpimg/ 作为压缩图片存储处，最后合并。
+      # 安装相关插件，转换图片。
+      - name: Install & Convert
+        run: |
+          npm install -g webp-batch-convert
+          cwebp-batch --in img/raw --out img/webp -q 75 -quiet
+          mv img/webp/*.webp img/raw
+          
+      # 发布 NPM 包
+      - name: Publish Package
+        run: |
+          git config --global user.email "Hevery_123@163.com"
+          git config --global user.name "heveryplus"
+          npm version patch
+          npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
+          
+      # 删除 rawimg/ 和 webpimg/ 下的所有文件
+ #     - name: Delete Files
+ #       run: |
+ #         rm -rf img/webp/*
+ #         rm -rf img/raw/*
+ #         touch img/webp/.gitkeep
+ #         touch img/raw/.gitkeep
+          
+      - name: Push
+        run: |
+          git add -A
+          git commit -m "Publish"
+          git push origin master
