@@ -1,0 +1,22 @@
+{
+  "name": "hevery-cdn",
+  "version": "1.0.1",
+  "description": "hevery cdn image",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/heveryplus/cdn.git"
+  },
+  "keywords": [
+    "图床"
+  ],
+  "author": "hevery",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/heveryplus/cdn/issues"
+  },
+  "homepage": "https://github.com/heveryplus/cdn#readme"
+}
